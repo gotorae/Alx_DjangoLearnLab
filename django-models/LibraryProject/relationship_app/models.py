@@ -40,6 +40,15 @@ class Library(models.Model):
         return self.name
 
 
+# ---------- Librarian ----------
+class Librarian(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE, related_name='librarians')
+
+    def __str__(self):
+        return f"{self.user.username} ({self.library.name})"
+
+
 # ---------- UserProfile ----------
 class UserProfile(models.Model):
     ROLE_CHOICES = [
