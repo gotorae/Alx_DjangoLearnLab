@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Book, Author, UserProfile, Librarian, Library
 from .forms import BookForm  # Assumes you have a BookForm
 
+
 # -----------------------
 # Book Views
 # -----------------------
@@ -18,7 +19,6 @@ def list_books(request):
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
-# Add a new book (requires 'can_add_book' permission)
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
     if request.method == 'POST':
@@ -31,7 +31,6 @@ def add_book(request):
     return render(request, 'relationship_app/add_book.html', {'form': form})
 
 
-# Edit an existing book (requires 'can_change_book' permission)
 @permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
@@ -45,7 +44,6 @@ def edit_book(request, pk):
     return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})
 
 
-# Delete a book (requires 'can_delete_book' permission)
 @permission_required('relationship_app.can_delete_book', raise_exception=True)
 def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
@@ -69,12 +67,13 @@ class LibraryDetailView(DetailView):
 # Role-Based Views
 # -----------------------
 
-# Helper functions
 def is_admin(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
+
 def is_librarian(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
 
 def is_member(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
@@ -113,3 +112,4 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
+
