@@ -26,13 +26,26 @@ try:
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found.")
 
-# 3. Retrieve librarians for a library
+# 3. Retrieve librarians for a library (using reverse relation)
 try:
     librarians = library.librarians.all()
     if librarians.exists():
         print(f"Librarians for {library_name}: {[librarian.user.username for librarian in librarians]}")
     else:
         print(f"No librarians assigned to '{library_name}'.")
+except NameError:
+    # library variable not defined if Library.DoesNotExist above
+    pass
+
+# 4. Retrieve a single librarian using Librarian.objects.get(library=...)
+try:
+    # If multiple librarians exist, this will return the first one (or raise MultipleObjectsReturned)
+    librarian = Librarian.objects.get(library=library)
+    print(f"Single librarian for {library_name}: {librarian.user.username}")
+except Librarian.DoesNotExist:
+    print(f"No librarian assigned to '{library_name}'.")
+except Librarian.MultipleObjectsReturned:
+    print(f"Multiple librarians exist for '{library_name}', cannot use .get() directly.")
 except NameError:
     # library variable not defined if Library.DoesNotExist above
     pass
