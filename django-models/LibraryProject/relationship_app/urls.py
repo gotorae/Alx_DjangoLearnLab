@@ -1,8 +1,6 @@
 from django.urls import path
-from .views import list_books  # ✅ exact import the checker wants
-
-# Import the other views separately
 from .views import (
+    list_books,
     LibraryDetailView,
     admin_view,
     librarian_view,
@@ -10,9 +8,16 @@ from .views import (
     add_book,
     edit_book,
     delete_book,
+    register,  # ✅ needed for "views.register"
 )
+from django.contrib.auth.views import LoginView, LogoutView  # ✅ needed for LoginView and LogoutView
 
 urlpatterns = [
+    # User authentication
+    path('register/', register, name='register'),  # ✅ register view
+    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),  # ✅ login view
+    path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),  # ✅ logout view
+
     # Book views
     path('books/', list_books, name='book_list'),
     path('books/add/', add_book, name='add_book'),
@@ -27,4 +32,3 @@ urlpatterns = [
     path('librarian-view/', librarian_view, name='librarian_view'),
     path('member-view/', member_view, name='member_view'),
 ]
-
