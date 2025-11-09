@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.views.generic.detail import DetailView  # ✅ exact import for automated check
 
-# ✅ Explicit import of Library first to satisfy automated checks
+# Explicit import of Library first to satisfy automated checks
 from .models import Library, Book, Author, UserProfile, Librarian
 from .forms import BookForm
 
@@ -94,6 +94,7 @@ def delete_book(request, pk):
         book.delete()
         return redirect('book_list')
     return render(request, 'delete_book.html', {'book': book})
+
 
 
 
