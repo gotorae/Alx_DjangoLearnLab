@@ -9,19 +9,12 @@ from relationship_app.models import Author, Book, Library, Librarian
 
 # --- Sample Queries ---
 
-# Define author name first
+# 1. Query all books by a specific author
 author_name = "John Doe"
-
-# Two-step approach
-author = Author.objects.get(name=author_name)
-books_by_author = Book.objects.filter(author=author)
-
-# OR single-line approach (you already have this below)
-# books_by_author = Book.objects.filter(author__name=author_name)
-
+books_by_author = Book.objects.filter(author__name=author_name)
 print(f"Books by {author_name}: {[book.title for book in books_by_author]}")
 
-# List all books in a library
+# 2. List all books in a library
 library_name = "Central Library"
 try:
     library = Library.objects.get(name=library_name)
@@ -29,7 +22,7 @@ try:
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found.")
 
-# Retrieve the librarian for a library
+# 3. Retrieve the librarian for a library
 try:
     librarian = library.librarian
     print(f"Librarian for {library_name}: {librarian.name}")
