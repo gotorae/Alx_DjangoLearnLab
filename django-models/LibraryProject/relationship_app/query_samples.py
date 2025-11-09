@@ -11,8 +11,12 @@ from relationship_app.models import Author, Book, Library, Librarian
 
 # 1. Query all books by a specific author
 author_name = "John Doe"
-books_by_author = Book.objects.filter(author__name=author_name)
-print(f"Books by {author_name}: {[book.title for book in books_by_author]}")
+try:
+    author = Author.objects.get(name=author_name)
+    books_by_author = Book.objects.filter(author=author)
+    print(f"Books by {author_name}: {[book.title for book in books_by_author]}")
+except Author.DoesNotExist:
+    print(f"No author found with name '{author_name}'.")
 
 # 2. List all books in a library
 library_name = "Central Library"
@@ -22,9 +26,13 @@ try:
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found.")
 
-# 3. Retrieve the librarian for a library
+# 3. Retrieve librarians for a library
 try:
-    librarian = library.librarian
-    print(f"Librarian for {library_name}: {librarian.name}")
-except Exception:
-    print(f"No librarian assigned to '{library_name}'.")
+    librarians = library.librarians.all()
+    if librarians.exists():
+        print(f"Librarians for {library_name}: {[librarian.user.username for librarian in librarians]}")
+    else:
+        print(f"No librarians assigned to '{library_name}'.")
+except NameError:
+    # library variable not defined if Library.DoesNotExist above
+    pass
