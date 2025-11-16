@@ -25,7 +25,7 @@ class CustomerUserManager(UserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class CustomerUser(AbstractUser):
+class CustomUser(AbstractUser):
     name = models.CharField(max_length=255, blank=True)
     email = models.EmailField(unique=True)
     date_of_birth = models.DateField(null=True, blank=True)

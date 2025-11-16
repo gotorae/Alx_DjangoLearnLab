@@ -1,14 +1,14 @@
 
 from django.contrib import admin
 from .models import Book
-from .models import CustomerUser
+from .models import CustomUser
 
 class CustomerUserAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'date_of_birth')
     search_fields = ('name', 'email')
     list_filter = ('name', 'email')
 
-admin.site.register(CustomerUser, CustomerUserAdmin)
+admin.site.register(CustomUser, CustomerUserAdmin)
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publication_year')
