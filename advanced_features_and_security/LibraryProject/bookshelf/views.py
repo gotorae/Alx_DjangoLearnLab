@@ -4,6 +4,16 @@ from django.http import HttpResponse
 def index(request): return HttpResponse("Welcome to my book app.")
 
 
+from .models import Book
+from django.db.models import Q
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    # Safe ORM query instead of raw SQL
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404
 from .models import Book

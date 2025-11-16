@@ -23,9 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure--i-19u2c8wp_e1e_jewt&hg%roa$))_pd4ds!*)a-cmrcjy(rb"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
+
+
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+
+# Cookies over HTTPS only
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 
 
 # Application definition
@@ -39,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bookshelf",
     "relationship_app",
+    "csp",
 ]
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
@@ -51,7 +63,21 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
+
+
+
+# ✅ Use the new format:
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'script-src': ("'self'", 'https://trusted-scripts.com'),
+        'style-src': ("'self'", 'https://trusted-styles.com'),
+    }
+}
+
+
 
 ROOT_URLCONF = "LibraryProject.urls"
 
