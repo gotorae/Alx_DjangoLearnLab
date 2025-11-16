@@ -39,10 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bookshelf",
     "relationship_app",
-    "authuser",
 ]
 
-AUTH_USER_MODEL = "authuser.CustomerUser"
+AUTH_USER_MODEL = "bookshelf.CustomerUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
