@@ -163,3 +163,7 @@ SECURE_HSTS_PRELOAD = True
 
 SESSION_COOKIE_SECURE = True  # Session cookies only over HTTPS
 CSRF_COOKIE_SECURE = True     # CSRF cookies only over HTTPS
+
+
+# Trust the proxy header for HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
