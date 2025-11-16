@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 def index(request): return HttpResponse("Welcome to my book app.")
@@ -12,6 +12,19 @@ def search_books(request):
     # Safe ORM query instead of raw SQL
     books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+from .forms import ExampleForm
+
+def create_book(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
 
 
 from django.contrib.auth.decorators import permission_required
