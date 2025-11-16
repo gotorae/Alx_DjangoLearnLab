@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 
 
-class CustomerUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError("Invalid email entered, check your email")
@@ -34,7 +34,7 @@ class CustomUser(AbstractUser):
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(blank=True, null=True)
 
-    objects = CustomerUserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
