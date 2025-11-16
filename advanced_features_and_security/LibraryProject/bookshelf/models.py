@@ -61,4 +61,15 @@ class Book(models.Model):
 def __str__(self):
     return self.title, self.author, self.publication_year
 
+
+
+class Meta:
+        permissions = [
+            ("can_view", "Can view book details"),
+            ("can_create", "Can create a new book"),
+            ("can_edit", "Can edit book details"),
+            ("can_delete", "Can delete a book"),
+        ]
+
+
 # Create your models here.
