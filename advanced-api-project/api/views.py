@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics, viewsets, filters, permissions
 from .serializers import BookSerializer, AuthorSerializer
 from .models import Author, Book
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
 
