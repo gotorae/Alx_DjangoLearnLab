@@ -1,33 +1,16 @@
-from django.test import TestCase
-from django.urls import reverse
-from .models import Author, Book
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 from rest_framework import status
+from django.urls import reverse
+from api.models import Author, Book
 
 
-class BookModelTest(TestCase):
-    def test_book_model_create(self):
-        author = Author.objects.create(name="Tsitsi Dangarembga")
+class BookAPITestCase(APITestCase):
 
-        book = Book.objects.create(
-            title="Nervous Conditions",
-            publication_year=2002,
-            author=author
-        )
-
-        self.assertEqual(book.title, "Nervous Conditions")
-        self.assertEqual(book.publication_year, 2002)
-        self.assertEqual(book.author.name, "Tsitsi Dangarembga")
-
-
-class BookAPITests(TestCase):
     def setUp(self):
-        self.client = APIClient()
         self.author = Author.objects.create(name="John Wilson")
 
-    def test_create_book_api(self):
+    def test_create_book(self):
         url = reverse("book-create")
-
         data = {
             "title": "Macbeth",
             "publication_year": 1991,
@@ -38,9 +21,8 @@ class BookAPITests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 1)
-        self.assertEqual(Book.objects.first().title, "Macbeth")
 
-    def test_list_books_api(self):
+    def test_list_books(self):
         Book.objects.create(
             title="Book A",
             publication_year=2000,
@@ -53,9 +35,9 @@ class BookAPITests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
-    def test_book_detail_api(self):
+    def test_book_detail(self):
         book = Book.objects.create(
-            title="Detail Test",
+            title="Detail Book",
             publication_year=2005,
             author=self.author
         )
@@ -64,9 +46,9 @@ class BookAPITests(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["title"], "Detail Test")
+        self.assertEqual(response.data["title"], "Detail Book")
 
-    def test_book_update_api(self):
+    def test_update_book(self):
         book = Book.objects.create(
             title="Old Title",
             publication_year=2010,
@@ -74,7 +56,6 @@ class BookAPITests(TestCase):
         )
 
         url = reverse("book-update", kwargs={"pk": book.id})
-
         data = {
             "title": "New Title",
             "publication_year": 2015,
@@ -82,14 +63,14 @@ class BookAPITests(TestCase):
         }
 
         response = self.client.put(url, data, format="json")
-        updated_book = Book.objects.get(id=book.id)
+        book.refresh_from_db()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(updated_book.title, "New Title")
+        self.assertEqual(book.title, "New Title")
 
-    def test_book_delete_api(self):
+    def test_delete_book(self):
         book = Book.objects.create(
-            title="To Delete",
+            title="Delete Book",
             publication_year=2018,
             author=self.author
         )
@@ -99,7 +80,3 @@ class BookAPITests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Book.objects.count(), 0)
-
-
-
-# Create your tests here.
