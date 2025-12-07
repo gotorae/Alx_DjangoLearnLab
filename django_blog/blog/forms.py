@@ -3,7 +3,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
-from taggit.forms import TagWidget  # ✅ Required by checker
+# ✅ Import TagWidget from django-taggit
+from taggit.forms import TagWidget
 
 from .models import Post, Comment
 
@@ -21,7 +22,8 @@ class CustomUserCreationForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content", "tags"]  # Include tags for TaggableManager
+        # Include tags because Post uses TaggableManager
+        fields = ["title", "content", "tags"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 8}),
@@ -53,3 +55,4 @@ class CommentForm(forms.ModelForm):
         if not data:
             raise forms.ValidationError("Comment cannot be empty.")
         return data
+
