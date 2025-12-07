@@ -1,0 +1,49 @@
+
+{% extends "blog/base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article>
+  <h2>{{ post.title }}</h2>
+  <p><em>By {{ post.author }} · {{ post.published_date|date:"Y-m-d H:i" }}</em></p>
+  <div>{{ post.content|linebreaks }}</div>
+</article>
+
+<hr>
+
+<section id="comments">
+  <h3>Comments ({{ comments|length }})</h3>
+
+  <ul class="comments">
+    {% for c in comments %}
+      <li>
+        <p><strong>{{ c.author }}</strong> · {{ c.created_at|date:"Y-m-d H:i" }}</p>
+        <p>{{ c.content|linebreaks }}</p>
+
+        {% if request.user == c.author %}
+          <p>
+            {% url Edit</a> ·
+            <a url Delete</a>
+          </p>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No comments yet.</li>
+    {% endfor %}
+  </ul>
+
+  {% if request.user.is_authenticated %}
+    <h4>Leave a comment</h4>
+    {% url 
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit">Post comment</button>
+    </form>
+  {% else %}
+    <p>{% url Log in</a> to comment.</p>
+  {% endif %}
+</section>
+
+<p>{% url ← Back to All Posts</a></p>
+{% endblock %}
+
