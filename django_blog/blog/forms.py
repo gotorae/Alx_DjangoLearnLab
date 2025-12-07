@@ -1,11 +1,9 @@
 
-
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
-from taggit.forms import TagWidget  # ✅ required by the checker
+from taggit.forms import TagWidget  # ✅ Required by checker
 
 from .models import Post, Comment
 
@@ -16,19 +14,18 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = User  # works with custom user models too
+        model = User
         fields = ("username", "email", "password1", "password2")
 
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        # Include 'tags' in fields because Post.tags is a TaggableManager
-        fields = ["title", "content", "tags"]
+        fields = ["title", "content", "tags"]  # Include tags for TaggableManager
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 8}),
-            # ✅ Use TagWidget from django-taggit
+            # ✅ Use TagWidget for tags field
             "tags": TagWidget(attrs={
                 "class": "form-control",
                 "placeholder": "e.g. django, tips, life",
