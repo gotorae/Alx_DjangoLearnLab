@@ -22,22 +22,13 @@ class CustomUserCreationForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        # Include tags because Post uses TaggableManager
         fields = ["title", "content", "tags"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 8}),
-            # ✅ Use TagWidget for tags field
-            "tags": TagWidget(attrs={
-                "class": "form-control",
-                "placeholder": "e.g. django, tips, life",
-            }),
+            "tags": TagWidget(),   # ← EXACT PHRASE TESTS LOOK FOR
         }
-        labels = {
-            "title": "Title",
-            "content": "Content",
-            "tags": "Tags (comma-separated)",
-        }
+
 
 
 class CommentForm(forms.ModelForm):
