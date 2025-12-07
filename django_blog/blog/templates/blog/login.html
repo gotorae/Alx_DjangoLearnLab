@@ -1,34 +1,26 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django Blog{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'posts' %}">Blog Posts</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <div class="content">
-        {% block content %}
-        <!-- Page-specific content goes here -->
-        {% endblock %}
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">Log in</h1>
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_username" class="form-label">Username</label>
+      <input type="text" name="username" id="id_username" class="form-control" required>
     </div>
 
-    <footer>
-        <p>&copy; 2024 Django Blog</p>
-    </footer>
+    <div class="mb-3">
+      <label for="id_password" class="form-label">Password</label>
+      <input type="password" name="password" id="id_password" class="form-control" required>
+    </div>
 
-    <script src="{% static 'js/scripts.js' %}"></script>
-</body>
-</html>
+    <button class="btn btn-primary" type="submit">Log in</button>
+    <a class="btn btn-link" href="{% url 'register' %}">Create an account</a>
+  </form>
+</div>
+{% endblock %}
+

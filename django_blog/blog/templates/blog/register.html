@@ -1,0 +1,41 @@
+
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">Create your account</h1>
+
+  <form method="post" action="{% url 'register' %}" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="mb-3">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {% for err in form.username.errors %}<div class="text-danger small">{{ err }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {% for err in form.email.errors %}<div class="text-danger small">{{ err }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.password1.label_tag }}
+      {{ form.password1 }}
+      {% for err in form.password1.errors %}<div class="text-danger small">{{ err }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.password2.label_tag }}
+      {{ form.password2 }}
+      {% for err in form.password2.errors %}<div class="text-danger small">{{ err }}</div>{% endfor %}
+    </div>
+
+    <button class="btn btn-primary" type="submit">Register</button>
+    <a class="btn btn-link" href="{% url 'login' %}">Already have an account? Log in</a>
+  </form>
+</div>
+{% endblock %}
