@@ -228,3 +228,17 @@ def search_posts(request):
         "blog/search_results.html",
         {"query": q, "results": results, "total": total},
     )
+
+
+
+
+
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"   # or your template
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get("tag_slug")
+        return Post.objects.filter(tags__slug=tag_slug)

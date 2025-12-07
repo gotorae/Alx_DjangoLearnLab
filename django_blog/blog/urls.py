@@ -5,7 +5,7 @@ from django.urls import path
 from .views import (
     home, login_user, logout_user, registration, profile,
     PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView,
-    CommentCreateView, CommentUpdateView, CommentDeleteView,
+    CommentCreateView, CommentUpdateView, CommentDeleteView, PostByTagListView,
     posts_by_tag, search_posts,
 )
 
@@ -25,6 +25,8 @@ urlpatterns = [
     path("posts/<int:pk>/", PostDetailView.as_view(), name="posts-detail"),
     path("posts/<int:pk>/edit/", PostUpdateView.as_view(), name="posts-update"),
     path("posts/<int:pk>/delete/", PostDeleteView.as_view(), name="posts-delete"),
+    path("tags/<slug:tag_slug>/", PostByTagListView.as_view(), name="posts-by-tag"),
+
 
     # =========================
     # Singular aliases (to satisfy exact strings checked by grader/tools)
