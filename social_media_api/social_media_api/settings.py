@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")  # Use env var in production
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = False
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # e.g. "yourapp.com,.herokuapp.com"
 
