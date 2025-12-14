@@ -140,5 +140,16 @@ class UnlikePostAPI(APIView):
         if deleted == 0:
             return Response({"detail": "Not liked yet"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Unliked"}, status=status.HTTP_200_OK)
+    
+
+
+class PostAPIview(generics.ListAPIView):
+    model = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class CommentAPIview(generics.ListAPIView):
+    model = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
