@@ -6,8 +6,11 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-default-key")  # Use env var in production
+
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")  # Use env var in production
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # e.g. "yourapp.com,.herokuapp.com"
 
 # Application definition
