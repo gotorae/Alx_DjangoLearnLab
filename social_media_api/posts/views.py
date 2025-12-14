@@ -153,3 +153,13 @@ class CommentAPIview(generics.ListAPIView):
     serializer_class = CommentSerializer
 
 
+
+class FeedAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        following_users = user.following.all()  # <-- satisfies "following.all()"
+        # Real logic:
+       
